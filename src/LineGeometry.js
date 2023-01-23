@@ -45,6 +45,7 @@ export default function LineGeometry() {
 
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    //background color
     renderer.setClearColor(0xffffff);
     divRef.current.appendChild(renderer.domElement);
     let lines = createLines(coords, 0x000000);
@@ -52,8 +53,7 @@ export default function LineGeometry() {
 
     camera = LookAtObj(lines.geometry, camera);
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target = new THREE.Vector3();
-    controls.update();
+
     var animate = function () {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
