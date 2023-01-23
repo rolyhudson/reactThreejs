@@ -2,6 +2,7 @@ import * as THREE from "three";
 import React, { useEffect, useRef } from "react";
 import { coords } from "./capMarkers";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { LookAtObj } from "./LookAtObj";
 
 export default function LineGeometry() {
   const divRef = useRef();
@@ -31,6 +32,7 @@ export default function LineGeometry() {
   }
 
   useEffect(() => {
+    //stop this from adding double scene
     if (divRef.current.innerHTML != "") return;
     var scene = new THREE.Scene();
 
@@ -48,14 +50,10 @@ export default function LineGeometry() {
     let lines = createLines(coords, 0x000000);
     scene.add(lines);
 
+    camera = LookAtObj(lines.geometry, camera);
     const controls = new OrbitControls(camera, renderer.domElement);
-    //TODO automate intial camera based on object size
-    camera.position.x = -10164;
-    camera.position.y = -2.81;
-    camera.position.z = 55164;
-    camera.near = 1;
+    controls.target = new THREE.Vector3();
     controls.update();
-
     var animate = function () {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
@@ -63,5 +61,10 @@ export default function LineGeometry() {
     };
     animate();
   }, []);
-  return <div ref={divRef}></div>;
+  return (
+    <div>
+      {". . ."}
+      <div ref={divRef}></div>
+    </div>
+  );
 }
